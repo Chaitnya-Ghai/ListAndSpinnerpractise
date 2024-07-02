@@ -50,9 +50,7 @@ class SelectedItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arrayAdapter= ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,mainActivity.list)
-        binding.dySpinner.adapter = arrayAdapter.apply {
-            mainActivity.list[cIndex].name
-        }
+        binding.dySpinner.adapter = arrayAdapter
         binding.numberPicker.minValue = 1
         binding.numberPicker.maxValue = 100
         binding.dySpinner.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{

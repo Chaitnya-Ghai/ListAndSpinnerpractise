@@ -5,6 +5,6 @@ data class Items(
     var quantity: Int
 ){
     override fun toString(): String {
-        return "$name \t $quantity"
+        return "$name"
     }
 }
