@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import cg.tutorials.listandspinner_practise.databinding.FragmentSelectedItemBinding
@@ -24,16 +25,13 @@ class SelectedItemFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentSelectedItemBinding
-    private var name:String ?=null
-    private var quantity:String?=null
-    private var array = mutableListOf<String>()
-    lateinit var arrayAdapter: ArrayAdapter<String>
-
+    private lateinit var mainActivity: MainActivity
+    lateinit var arrayAdapter: ArrayAdapter<Items>
+     var cIndex:Int=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivity= activity as MainActivity
         arguments?.let {
-            name = it.getString("name")?:""
-            quantity =it.getString("quantity")?:""
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
@@ -51,12 +49,32 @@ class SelectedItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        array.add(name.toString())
-        arrayAdapter=ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,array)
-        binding.dySpinner.adapter = arrayAdapter
-
+        cIndex=mainActivity.list.size-1
+        arrayAdapter= ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,mainActivity.list)
+        binding.dySpinner.adapter = arrayAdapter.apply {
+            mainActivity.list[cIndex].name
+        }
         binding.numberPicker.minValue = 1
         binding.numberPicker.maxValue = 100
+        binding.dySpinner.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                binding.numberPicker.value=mainActivity.listAdapter.list[position].quantity
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+        binding.orderBtn.setOnClickListener {
+            mainActivity.list[cIndex].quantity = binding.numberPicker.value
+            mainActivity.listAdapter.notifyDataSetChanged()
+            Toast.makeText(requireContext(), "item quantity is updated to ${mainActivity.list[cIndex].quantity}", Toast.LENGTH_SHORT).show()
+        }
         binding.decreaseBtn.setOnClickListener {
             if(binding.numberPicker.value>binding.numberPicker.minValue){
                 binding.numberPicker.value-=1

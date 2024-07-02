@@ -26,8 +26,7 @@ class ListViewFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentListViewBinding
-   private var list = arrayListOf<Items>()
-    private var listAdapter = ListAdapter(list)
+
     private lateinit var mainActivity: MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +49,7 @@ class ListViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.listview.adapter = listAdapter
+        binding.listview.adapter = mainActivity.listAdapter
         binding.fab.setOnClickListener {
             val dialogViewBinding = CustomDialogBinding.inflate(layoutInflater)
             val dialog = Dialog(requireContext()).apply {
@@ -68,19 +67,21 @@ class ListViewFragment : Fragment() {
                 } else if (dialogViewBinding.etQuantity.text.trim().toString().isNullOrBlank()) {
                     dialogViewBinding.etQuantity.error = "Enter Quantity"
                 } else {
-                    list.add(
+                    mainActivity.list.add(
                         Items(
                             dialogViewBinding.etName.text.toString(),
                             dialogViewBinding.etQuantity.text.toString().toInt()
                         )
                     )
-                    listAdapter.notifyDataSetChanged()
-                    val bundle = Bundle()
-                    bundle.putString("name",dialogViewBinding.etName.text.toString())
-                    bundle.putInt("quantity",dialogViewBinding.etQuantity.text.toString().toInt())
-                    findNavController().navigate(R.id.selectedItemFragment,bundle)
+                    mainActivity.listAdapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
+            }
+            dialogViewBinding.cancelButton.setOnClickListener {
+                dialog.dismiss()
+            }
+            mainActivity.binding?.bottomNav?.setOnClickListener {
+                findNavController().navigate(R.id.selectedItemFragment)
             }
         }
     }
