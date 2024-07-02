@@ -49,7 +49,6 @@ class SelectedItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cIndex=mainActivity.list.size-1
         arrayAdapter= ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,mainActivity.list)
         binding.dySpinner.adapter = arrayAdapter.apply {
             mainActivity.list[cIndex].name
@@ -63,6 +62,7 @@ class SelectedItemFragment : Fragment() {
                 position: Int,
                 id: Long,
             ) {
+                cIndex=position
                 binding.numberPicker.value=mainActivity.listAdapter.list[position].quantity
             }
 
