@@ -69,9 +69,17 @@ class SelectedItemFragment : Fragment() {
 
         }
         binding.orderBtn.setOnClickListener {
-            mainActivity.list[cIndex].quantity = binding.numberPicker.value
-            mainActivity.listAdapter.notifyDataSetChanged()
-            Toast.makeText(requireContext(), "item quantity is updated to ${mainActivity.list[cIndex].quantity}", Toast.LENGTH_SHORT).show()
+            if (binding.numberPicker.value>mainActivity.list[cIndex].quantity){
+                Toast.makeText(requireContext(), "Max limit", Toast.LENGTH_SHORT).show()
+            }else {
+                mainActivity.list[cIndex].quantity = mainActivity.list[cIndex].quantity-binding.numberPicker.value
+                mainActivity.listAdapter.notifyDataSetChanged()
+                Toast.makeText(
+                    requireContext(),
+                    "item quantity is updated to ${mainActivity.list[cIndex].quantity}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
         binding.decreaseBtn.setOnClickListener {
             if(binding.numberPicker.value>binding.numberPicker.minValue){
