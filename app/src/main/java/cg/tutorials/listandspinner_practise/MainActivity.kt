@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding =ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
         navController = findNavController(R.id.host)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
