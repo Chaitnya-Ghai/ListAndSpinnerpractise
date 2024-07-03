@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 binding?.bottomNav?.menu?.get(0)?.setChecked(true)
             }
             if(destination.id == R.id.selectedItemFragment){
-                binding?.bottomNav?.menu?.get(0)?.setChecked(true)
+                binding?.bottomNav?.menu?.get(1)?.setChecked(true)
             }
         }
 
